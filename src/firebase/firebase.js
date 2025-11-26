@@ -4,6 +4,7 @@ import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 let app, auth, db, storage;
+//Boi we will need to use an env file for this shit soon
 
 export const initFirebase = () => {
   if (app) return true; 
