@@ -71,7 +71,7 @@ export default function App() {
           <button onClick={() => setIsMobileMenuOpen(true)} className="lg:hidden p-2 hover:bg-gray-100 rounded-lg">
             ☰
           </button>
-          <h2 className="text-lg font-semibold">{currentView.charAt(0).toUpperCase() + currentView.slice(1)}</h2>
+          <h2 className="text-lg font-semibold text-gray-500">{currentView.charAt(0).toUpperCase() + currentView.slice(1)}</h2>
           <span className="text-sm text-gray-600 hidden sm:inline">{user.email}</span>
         </header>
         <main className="flex-1 overflow-y-auto p-6">
