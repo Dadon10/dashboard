@@ -54,7 +54,7 @@ export default function App() {
   };
 
   if (!isConfigured) return <FirebaseConfig />;
-  if (loading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  if (loading) return <div className="min-h-screen flex items-center justify-center text-center animate-pulse text-2xl text-green-500">Loading...</div>;
   if (!user) return <Login onLogin={() => setUser(auth.currentUser)} />;
 
   return (
