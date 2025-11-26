@@ -8,7 +8,7 @@ export default function ReportsView() {
   useEffect(() => {
     const fetchReports = async () => {
       try {
-        const snapshot = await getDocs(collection(db, 'reports'));
+        const snapshot = await getDocs(collection(db, 'pickups'));
         setReports(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
       } catch (err) {
         console.error(err);
