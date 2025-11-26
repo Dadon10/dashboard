@@ -9,7 +9,7 @@ export default function DashboardView() {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const reqSnap = await getDocs(collection(db, 'requests'));
+        const reqSnap = await getDocs(collection(db, 'pickups'));
         let total = reqSnap.size;
         let completed = 0, pending = 0;
 

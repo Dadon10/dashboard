@@ -9,7 +9,7 @@ export default function RequestsView() {
   useEffect(() => {
     const fetchRequests = async () => {
       try {
-        const snapshot = await getDocs(collection(db, 'requests'));
+        const snapshot = await getDocs(collection(db, 'pickups'));
         const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         setRequests(data);
       } catch (err) {
