@@ -18,7 +18,7 @@ export default function Sidebar({ currentView, onViewChange, onLogout, isMobileO
         <nav className="flex-1 space-y-2">
           {items.map(i => (
             <button key={i.id} onClick={() => { onViewChange(i.id); onMobileClose(); }} className={`flex items-center w-full p-2 rounded ${currentView === i.id ? 'bg-green-600' : 'hover:bg-gray-800'}`}>
-              <i.icon className="w-5 h-5 mr-2" /> {i.label}
+              <i.icon className="w-5 h-5 mr-2 " /> {i.label}
             </button>
           ))}
         </nav>
