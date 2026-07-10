@@ -8,6 +8,7 @@ import DashboardView from "./components/Dashboard/DashboardView";
 import RequestsView from "./components/Requests/RequestsView";
 import ReportsView from "./components/Reports/ReportsView";
 import { collection, query, orderBy, onSnapshot, doc, updateDoc, serverTimestamp } from 'firebase/firestore';
+import { BlinkBlur } from 'react-loading-indicators';
 
 export default function App() {
   const [isConfigured, setIsConfigured] = useState(false);
@@ -54,7 +55,17 @@ export default function App() {
   };
 
   if (!isConfigured) return <FirebaseConfig />;
-  if (loading) return <div className="min-h-screen flex items-center justify-center text-center animate-pulse text-2xl text-green-500">Loading...</div>;
+  if (loading) return (
+    <div className="min-h-screen flex items-center justify-center text-center animate-pulse text-2xl text-green-500">
+      <BlinkBlur
+        color="#32cd32"
+        size="medium"
+        text="garbage Collector"
+        textColor=""
+      />
+    </div>
+  );
+
   if (!user) return <Login onLogin={() => setUser(auth.currentUser)} />;
 
   return (

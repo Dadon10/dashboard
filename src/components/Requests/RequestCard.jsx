@@ -4,7 +4,7 @@ export default function RequestCard({ request, onUpdateStatus, onDelete }) {
       <div className="flex justify-between items-center">
         <div>
           <h3 className="pb-2 font-bold">{request.userName}</h3>
-          <h3 className="font-medium pb-2">{request.phone}</h3>
+          <h3 className="font-medium pb-2">Phone: {request.phone}</h3>
           <p className="text-sm text-gray-500">{request.address}</p>
 
           <p className="text-sm text-green-500 font-semibold pt-2">
