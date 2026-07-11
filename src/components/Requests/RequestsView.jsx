@@ -1,4 +1,3 @@
-import RequestCard from './RequestCard';
 import { useEffect, useState } from "react";
 import {
   collection,
@@ -9,6 +8,7 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import { db } from "../../firebase/firebase";
+import RequestCard from "./RequestCard";
 import RequestCardSkeleton from "./RequestCradSkeleton";
 import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -23,7 +23,7 @@ export default function RequestsView() {
       setIsLoading(true);
 
       try {
-       //TODO: Uncomment this if you want to test the skeleton
+        //TODO: Uncomment this if you want to test the skeleton
         //await new Promise((resolve) => setTimeout(resolve, 2000));
 
         const snapshot = await getDocs(collection(db, "pickups"));
@@ -110,7 +110,11 @@ export default function RequestsView() {
 
       {isLoading ? (
         [...Array(5)].map((_, index) => (
-          <SkeletonTheme key={index} baseColor="#e5e7eb" highlightColor="#f3f4f6">
+          <SkeletonTheme
+            key={index}
+            baseColor="#e5e7eb"
+            highlightColor="#f3f4f6"
+          >
             <RequestCardSkeleton />
           </SkeletonTheme>
         ))

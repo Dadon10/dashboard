@@ -18,7 +18,7 @@ export default function App() {
   const [currentView, setCurrentView] = useState('dashboard');
   const [requests, setRequests] = useState([]);
   const [requestsLoading, setRequestsLoading] = useState(true);
-  const [operationError, setOperationError] = useState('');
+  // const [operationError, setOperationError] = useState('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -49,7 +49,7 @@ export default function App() {
       },
       err => {
         console.error('Realtime load error', err);
-        setOperationError('Unable to load request data. Please try again later.');
+        // setOperationError('Unable to load request data. Please try again later.');
         setRequestsLoading(false);
       }
     );
@@ -67,10 +67,10 @@ export default function App() {
       const requestRef = doc(db, 'requests', requestId);
       const updateData = { status: newStatus, updatedAt: serverTimestamp() };
       await updateDoc(requestRef, updateData);
-      setOperationError('');
+      // setOperationError('');
     } catch (error) {
       console.error('Status update failed', error);
-      setOperationError('Failed to update request status.');
+      // setOperationError('Failed to update request status.');
     }
   };
 
@@ -81,10 +81,10 @@ export default function App() {
         deleted: true,
         deletedAt: serverTimestamp(),
       });
-      setOperationError('');
+      // setOperationError('');
     } catch (error) {
       console.error('Archive failed', error);
-      setOperationError('Failed to archive request.');
+      // setOperationError('Failed to archive request.');
     }
   };
 
@@ -132,14 +132,14 @@ export default function App() {
           </div>
           <span className="text-sm text-gray-600 hidden sm:inline">{user.email}</span>
         </header>
-        {operationError && (
+        {/* {operationError && (
           <div className="mx-6 mt-4 rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-red-700 flex items-center justify-between">
             <span>{operationError}</span>
             <button onClick={() => setOperationError('')} className="text-sm underline">
               Dismiss
             </button>
           </div>
-        )}
+        )} */}
         <main className="flex-1 overflow-y-auto p-6">
           {currentView === 'dashboard' && <DashboardView requests={requests} loading={requestsLoading} />}
           {currentView === 'requests' && <RequestsView requests={requests} loading={requestsLoading} onUpdateStatus={handleUpdateStatus} onArchive={handleArchiveRequest} />}
