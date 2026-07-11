@@ -3,7 +3,7 @@ import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth, db, initFirebase } from "./firebase/firebase";
 import Sidebar from './components/Sidebar';
 import Login from "./components/Auth/Login";
-import FirebaseConfig from "./components/Auth/FirebaseConfig";
+// import FirebaseConfig from "./components/Auth/FirebaseConfig";
 import DashboardView from "./components/Dashboard/DashboardView";
 import RequestsView from "./components/Requests/RequestsView";
 import ReportsView from "./components/Reports/ReportsView";
@@ -28,7 +28,9 @@ export default function App() {
         setLoading(false);
       });
       return () => unsubscribe();
-    } else setLoading(false);
+    } else{
+       setLoading(false);
+      }
   }, []);
 
   useEffect(() => {
@@ -54,7 +56,17 @@ export default function App() {
     await updateDoc(requestRef, updateData);
   };
 
-  if (!isConfigured) return <FirebaseConfig />;
+  if (!isConfigured) return (
+    <div className="min-h-screen flex items-center justify-center text-center animate-pulse text-2xl text-green-500">
+      <BlinkBlur
+        color="#32cd32"
+        size="medium"
+        text="Please Configure firebase!"
+        textColor=""
+      />
+    </div>
+  );
+
   if (loading) return (
     <div className="min-h-screen flex items-center justify-center text-center animate-pulse text-2xl text-green-500">
       <BlinkBlur
