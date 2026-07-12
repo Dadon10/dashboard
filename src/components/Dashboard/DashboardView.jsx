@@ -3,7 +3,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebase/firebase";
 import StatCard from "./StatCard";
 import UsersTable from "./UsersTable";
-import DashboardSkeleton from "./DashboardSkeleto"; 
+import DashboardSkeleton from "./DashboardSkeleton"; 
 
 import { SkeletonTheme } from "react-loading-skeleton";
 
