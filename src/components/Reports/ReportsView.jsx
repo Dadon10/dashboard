@@ -13,31 +13,56 @@ export default function ReportsView() {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
 
-  useEffect(() => {
-    const fetchReports = async () => {
-      try {
-        setLoading(true);
-        const snapshot = await getDocs(collection(db, "pickups"));
-        setReports(
-          snapshot.docs.map((doc) => {
-            const data = doc.data();
-            return {
-              id: doc.id,
-              ...data,
-              date: data.date?.toDate(),
-              createdAt: data.createdAt?.toDate(),
-            };
-          })
-        );
-      } catch (err) {
-        console.error("Error fetching reports:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
+ useEffect(() => {
+   const fetchReports = async () => {
+     try {
+       setLoading(true);
 
-    fetchReports();
-  }, []);
+       // Fetch all users
+       const usersSnap = await getDocs(collection(db, "users"));
+
+       const usersMap = {};
+
+       usersSnap.forEach((doc) => {
+         usersMap[doc.id] = doc.data();
+       });
+
+       // Fetch all pickups
+       const pickupSnap = await getDocs(collection(db, "pickups"));
+
+       const reportsData = pickupSnap.docs.map((doc) => {
+         const data = doc.data();
+
+         const user = usersMap[data.userId];
+
+         return {
+           id: doc.id,
+           ...data,
+
+           // Convert Firestore timestamps
+           date: data.date?.toDate(),
+           createdAt: data.createdAt?.toDate(),
+
+           // User details where we i get the detailks from
+           customerName: user ? `${user.fname} ${user.lname}` : "Unknown User",
+
+           customerEmail: user?.email || "",
+           customerPhone: user?.phone_number || "",
+         };
+       });
+
+       setReports(reportsData);
+
+       console.log(reportsData);
+     } catch (err) {
+       console.error("Error fetching reports:", err);
+     } finally {
+       setLoading(false);
+     }
+   };
+
+   fetchReports();
+ }, []);
 
   // Filter and search logic
   const filteredReports = useMemo(() => {
@@ -45,7 +70,7 @@ export default function ReportsView() {
       const matchesSearch =
         report.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
         (report.customerName || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (report.location || "").toLowerCase().includes(searchTerm.toLowerCase());
+        (report.address || "").toLowerCase().includes(searchTerm.toLowerCase());
 
       const matchesStatus = statusFilter === "all" || (report.status || "pending") === statusFilter;
 
@@ -91,7 +116,7 @@ export default function ReportsView() {
 
   // Export to CSV
   const exportToCSV = () => {
-    const headers = ["Report ID", "Pickup Date", "Created At", "Charge (K)", "Status", "Customer", "Location"];
+    const headers = ["Report ID", "Pickup Date", "Created At", "Charge (K)", "Status", "Customer", "Address"];
     const rows = filteredReports.map((r) => [
       r.id,
       r.date ? r.date.toLocaleString() : "N/A",
@@ -99,7 +124,7 @@ export default function ReportsView() {
       r.price || 0,
       r.status || "pending",
       r.customerName || "N/A",
-      r.location || "N/A",
+      r.address || "N/A",
     ]);
 
     const csv = [headers, ...rows].map((row) => row.map((cell) => `"${cell}"`).join(",")).join("\n");
@@ -185,7 +210,7 @@ export default function ReportsView() {
             <Search className="absolute left-3 top-3 text-gray-400 w-5 h-5" />
             <input
               type="text"
-              placeholder="Search by ID, customer, or location..."
+              placeholder="Search by ID, customer, or Address..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -198,6 +223,7 @@ export default function ReportsView() {
           >
             <option value="all">All Status</option>
             <option value="pending">Pending</option>
+            <option value="accepted">Accepted</option>
             <option value="completed">Completed</option>
             <option value="cancelled">Cancelled</option>
           </select>
@@ -261,7 +287,7 @@ export default function ReportsView() {
                   <th className="px-6 py-3 text-left font-semibold text-gray-700">Charge (K)</th>
                   <th className="px-6 py-3 text-left font-semibold text-gray-700">Status</th>
                   <th className="px-6 py-3 text-left font-semibold text-gray-700">Customer</th>
-                  <th className="px-6 py-3 text-left font-semibold text-gray-700">Location</th>
+                  <th className="px-6 py-3 text-left font-semibold text-gray-700">Address</th>
                 </tr>
               </thead>
               <tbody>
@@ -285,7 +311,7 @@ export default function ReportsView() {
                       </span>
                     </td>
                     <td className="px-6 py-4 text-gray-600">{report.customerName || "—"}</td>
-                    <td className="px-6 py-4 text-gray-600">{report.location || "—"}</td>
+                    <td className="px-6 py-4 text-gray-600">{report.address || "—"}</td>
                   </tr>
                 ))}
               </tbody>

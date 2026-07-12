@@ -39,7 +39,7 @@ export default function UsersTable() {
           });
         }
       });
-      console.log(data.length)
+      console.log(data)
       setUsers(data);
     } catch (err) {
       console.error(err);
