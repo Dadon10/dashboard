@@ -1,21 +1,5 @@
 export default function RequestCard({ request, onUpdateStatus, onDelete }) {
-  const status = request.status || 'pending';
-  const isCompleted = status === 'completed';
-  const isRejected = status === 'rejected';
-  const showAccept = status === 'pending';
-  const showReject = !isCompleted && !isRejected;
-  const showComplete = !isCompleted && !isRejected;
-
   return (
-    <div className="p-4 bg-white rounded shadow mb-4">
-      <div className="flex flex-col lg:flex-row justify-between gap-4 lg:items-start">
-        <div className="space-y-2">
-          <h3 className="text-lg font-semibold">{request.userName || 'Unknown requester'}</h3>
-          <p className="text-sm text-gray-500">{request.phone || 'No contact provided'}</p>
-          {request.address && <p className="text-sm text-gray-500">{request.address}</p>}
-          <p className="text-sm text-green-600 font-semibold">Waste Type: {request.wasteType || 'Unknown'}</p>
-          <p className="text-sm text-blue-600 font-semibold">Pickup Time: {request.timeFrame || 'Not set'}</p>
-          <p className="text-sm text-gray-400">Request ID: {request.id}</p>
     <div className="p-4 bg-white rounded shadow mb-2">
       <div className="flex justify-between items-center">
         <div>
@@ -33,46 +17,51 @@ export default function RequestCard({ request, onUpdateStatus, onDelete }) {
         </div>
 
         <span
-          className={`px-3 py-1 rounded-full text-white text-sm ${
-            isCompleted
-              ? 'bg-green-500'
-              : isRejected
-              ? 'bg-red-500'
-              : status === 'accepted'
-              ? 'bg-blue-500'
-              : 'bg-yellow-500'
+          className={`px-2 py-1 rounded text-white text-sm ${
+            request.status === "completed"
+              ? "bg-green-500"
+              : request.status === "rejected"
+              ? "bg-red-500"
+              : request.status === "accepted"
+              ? "bg-blue-500"
+              : "bg-yellow-500"
           }`}
         >
-          {status}
+          {request.status || "pending"}
         </span>
       </div>
 
-      <div className="flex flex-wrap gap-3 mt-4">
-        {showAccept && (
-          <button onClick={() => onUpdateStatus(request.id, 'accepted')} className="bg-blue-600 text-white px-3 py-2 rounded hover:bg-blue-700">
-            Accept
-          </button>
-        )}
+      {/* CRUD ACTION BUTTONS */}
+      <div className="flex gap-3 mt-4">
 
-        {showReject && (
-          <button onClick={() => onUpdateStatus(request.id, 'rejected')} className="bg-red-600 text-white px-3 py-2 rounded hover:bg-red-700">
-            Reject
-          </button>
-        )}
+        <button
+          onClick={() => onUpdateStatus(request.id, "accepted")}
+          className="bg-blue-600 text-white px-3 py-1 rounded"
+        >
+          Accept
+        </button>
 
-        {showComplete && (
-          <button onClick={() => onUpdateStatus(request.id, 'completed')} className="bg-green-600 text-white px-3 py-2 rounded hover:bg-green-700">
-            Complete
-          </button>
-        )}
+        <button
+          onClick={() => onUpdateStatus(request.id, "rejected")}
+          className="bg-red-600 text-white px-3 py-1 rounded"
+        >
+          Reject
+        </button>
 
-        <button onClick={() => onDelete(request.id)} className="bg-gray-700 text-white px-3 py-2 rounded hover:bg-gray-800">
+        <button
+          onClick={() => onUpdateStatus(request.id, "completed")}
+          className="bg-green-600 text-white px-3 py-1 rounded"
+        >
+          Complete
+        </button>
+
+        <button
+          onClick={() => onDelete(request.id)}
+          className="bg-gray-700 text-white px-3 py-1 rounded"
+        >
           Archive
         </button>
       </div>
-    </div>
-    </div>
-    </div>
     </div>
   );
 }
