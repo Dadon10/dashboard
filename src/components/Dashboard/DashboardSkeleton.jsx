@@ -26,6 +26,9 @@ export default function DashboardSkeleton() {
           </div>
         ))}
       </div>
+      <div className="mt-6">
+        <Skeleton height={260} />
+      </div>
     </div>
   );
 }
